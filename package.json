@@ -1,0 +1,31 @@
+{
+  "name": "qwebpack-convert",
+  "version": "0.0.1",
+  "description": "Convert a fekit project to a webpack compatible one",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sdwangbaotong/qwebpack-convert.git"
+  },
+  "keywords": [
+    "webpack",
+    "fekit",
+    "convert"
+  ],
+  "author": {
+    "name": "baotong.wang",
+    "email": "sdwangbaotong@hotmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sdwangbaotong/qwebpack-convert/issues"
+  },
+  "maintainers": [{
+    "name": "baotong.wang",
+    "email": "sdwangbaotong@hotmail.com"
+  }],
+  "homepage": "https://github.com/sdwangbaotong/qwebpack-convert"
+}

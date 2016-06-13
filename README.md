@@ -1,5 +1,4 @@
 # qwebpack-convert
-Convert a fekit project to a webpak compatible one
 
 #### 安装方式：npm install qwebpack-convert -g
 
@@ -10,7 +9,7 @@ Convert a fekit project to a webpak compatible one
 + 将webpack.config.js模板自动添加到文件根目录下（目前还不支持自动copy fekit.config中的exports、alias，需要手动执行）
 + copy webpack需要用到的package.json模板到根目录下
 + 将pack，sync脚本同步到工程根目录下的build文件夹内，功能和fekit pack，fekit sync相同
-+ 本地执行npm install，安装各种包
++ 本地执行npm install，安装各种包（目前先手动执行，推荐升级到npm3）
 
 以上步骤完成之后这个工程就是一个可以用webpack来打包的工程了。具体使用方法
 + 根目录下面执行webpack命令，执行一次打包过程
