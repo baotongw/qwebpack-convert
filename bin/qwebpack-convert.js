@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var filesys = require('fs'),
 	pathsys = require('path'),
 	childProcess = require('child_process');
