@@ -30,9 +30,6 @@ module.exports = {
         path: './prd',
         filename: '[name].js'
     },
-    resolve: {
-        extensions: ['', '.js', '.jsx', '.css', '.scss', '.string', '.mustache']
-    },
     module: {
         loaders: [{
             test: /\.es6$/,
