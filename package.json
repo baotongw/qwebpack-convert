@@ -1,13 +1,12 @@
 {
   "name": "qwebpack-convert",
-  "version": "0.0.1",
+  "version": "0.0.7",
   "description": "Convert a fekit project to a webpack compatible one",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "qwebpack-convert": "./bin/qwebpack-convert"
+    "qwebpack-convert": "./bin/qwebpack-convert.js"
   },
   "repository": {
     "type": "git",

@@ -2,36 +2,25 @@
 
 var filesys = require('fs'),
 	pathsys = require('path'),
-	childProcess = require('child_process');
+	fekitModuleConvert = require('./../tools/fekit-module-convert.js');
 
 console.log('##########  Webpack Convert Start ##########')
-
-var root = process.cwd(),
+console.log('');
+var projectRoot = process.cwd(),
 	moduleRoot = pathsys.dirname(process.argv[1]);
-console.log('Current path: ' + root);
-console.log('Global path: ' + moduleRoot);
+
+moduleRoot = pathsys.dirname(moduleRoot);
 
 // do fekit module transfer
 var command = 'node ./tools/fekit-module-convert.js';
 
+console.log('');
 console.log('##########  Step1 convert fekit modules ##########')
-try{
-	childProcess.exec(command, {
-		cwd: root
-	}, function(error, stdout, stderr) {
-		if (error) {
-			console.log('Step 1: convert fekit module failed')
-			return
-		}
-
-		console.log('Step 1: convert fekit module success');
-	});
-} catch (e) {
-	console.log('Step 1: convert fekit module failed')
-}
+fekitModuleConvert(projectRoot);
 
 console.log('');
 console.log('##########  Step2 copy wepback files ##########')
+
 var tmpls = [{
 	source: './templates/package.json',
 	dest: './package.json'
@@ -42,17 +31,16 @@ var tmpls = [{
 	source: './templates/generate-refs.js',
 	dest: './build/generate-refs.js'
 }, {
-	source: './templates/post-action.js',
-	dest: './build/post-action.js'
+	source: './templates/post-actions.js',
+	dest: './build/post-actions.js'
 }, {
 	source: './templates/sync.js',
 	dest: './build/sync.js'
 }]
 
-// copy package.json, webpack.config.js, pack, sync scripts to the project root folder
-var buildPath = pathsys.resolve(root, './build');
+// copy package.json, webpack.config.js, pack, sync scripts to the project projectRoot folder
+var buildPath = pathsys.resolve(projectRoot, './build');
 
-console.log(buildPath);
 try {
 	var dirStat = filesys.statSync(buildPath);
 	if (!dirStat.isDirectory()) {
@@ -64,7 +52,7 @@ try {
 
 tmpls.forEach(function(item, index) {
 	var source = pathsys.resolve(moduleRoot, item.source),
-		dest = pathsys.resolve(root, item.source),
+		dest = pathsys.resolve(projectRoot, item.dest),
 		content;
 
 	if (source == dest) {
@@ -73,12 +61,12 @@ tmpls.forEach(function(item, index) {
 
 	content = filesys.readFileSync(source)
 	if (content) {
-		filesys.writeFile(dest, content, function(err) {
-			if (err) {
-				consle.log('write file failed : ' + dest);
-			} else {
-				console.log('created file : ' + dest);
-			}
-		});
+		try {
+			filesys.writeFileSync(dest, content);
+			console.log('created file : ' + dest);
+		} catch(error) {
+			consle.log('write file failed : ' + dest);
+			console.log(error)			
+		}
 	}
 });

@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var generateRefs = require('./build/generate-refs.js');
 var packageExtractCssPlugin = require('package-webpack-extract-css-plugin');
 
 // 需要手动从fekit.config工程中copy exports部分到这里
@@ -18,6 +19,9 @@ exports.forEach(function(output) {
 
     webpackExport[key] = rootPrefix + output;
 });
+
+// 生成ref文件夹，其中包括vm、ver文件
+generateRefs(exports);
 
 module.exports = {
     originExports: exports,

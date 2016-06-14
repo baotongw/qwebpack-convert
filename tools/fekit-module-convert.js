@@ -1,8 +1,9 @@
 var filesys = require('fs'),
 	pathsys = require('path');
 
-var root = process.cwd(),
-	fekitModule = 'fekit_modules';
+var fekitModule = 'fekit_modules';
+
+var level = 0;
 
 function resolveModule(modulePath) {
 	var configPath = pathsys.resolve(modulePath, 'fekit.config'),
@@ -10,45 +11,47 @@ function resolveModule(modulePath) {
 
 	var moduleName = pathsys.basename(modulePath);
 
-	filesys.readFile(configPath, function(err, fekitConfig) {
-		var packageJson;
+	var fekitConfig,
+		packageJson;
 
-		// 部分fekit组件不存在fekit.config文件
-		if (err) {
-			packageJson = {
-				name: moduleName,
-				main: 'src/index.js',
-				version: 'no version',
-				author: 'Qunar team'
-			}
-		} else {
-			packageJson = JSON.parse(fekitConfig);
-			packageJson.main = packageJson.main || 'src/index.js';
-		}
-
-		filesys.writeFile(packageJsonPath, JSON.stringify(packageJson), function(err) {
-			if (err) throw err;
-
-			console.log('package.json was added to the ' + pathsys.basename(modulePath) || modulePath);
+	try {
+		fekitConfig = filesys.readFileSync(configPath, {
+			encoding: 'utf-8'
 		});
-	});
+	} catch(err) {}
+
+	if (fekitConfig) {
+		packageJson = JSON.parse(fekitConfig);
+		packageJson.main = packageJson.main || 'src/index.js';
+	} else {
+		packageJson = {
+			name: moduleName,
+			main: 'src/index.js',
+			version: 'no version',
+			author: 'Qunar team'
+		}
+	}
+
+	filesys.writeFileSync(packageJsonPath, JSON.stringify(packageJson))
 }
 
-function handleDir(projectPath, isInnerProject) {
+function handleDir(projectPath, isSubModule) {
 	var modulePath,
 		stat,
 		modules,
-		fekitModulesPath;
+		fekitModulesPath,
+		padding = [];
+	
+	for(var i = 0; i < level; i++) padding.push('  ');
 
-	fekitModulesPath = isInnerProject ? projectPath : pathsys.join(projectPath, fekitModule);
+	fekitModulesPath = isSubModule ? pathsys.join(projectPath, fekitModule) : projectPath;
 
 	if (filesys.existsSync(fekitModulesPath)) {
 		modules = filesys.readdirSync(fekitModulesPath);
 
-		console.log('modules list: ');
-		console.log(modules);
-
 		for (var j = 0; j < modules.length; j++) {
+			console.log(padding.join('') + '--' + modules[j]);
+
 			modulePath = pathsys.join(fekitModulesPath, modules[j]);
 			stat = filesys.statSync(modulePath);
 
@@ -56,14 +59,16 @@ function handleDir(projectPath, isInnerProject) {
 				resolveModule(modulePath);
 				// 递归检查所有子fekit_modules文件夹
 				if (filesys.existsSync(pathsys.join(modulePath, fekitModule))) {
-					handleDir(modulePath);
+					level++;
+					handleDir(modulePath, true);
+					level--;
 				}
 			}
 		}
 	}
 }
 
-function transform() {
+function transform(root) {
 	var projects = filesys.readdirSync(root),
 		projectPath,
 		stat;
@@ -72,19 +77,10 @@ function transform() {
 		projectPath = pathsys.join(root, projects[i]);
 
 		if (projects[i] === fekitModule) {
-			handleDir(projectPath, true);
-		}
-
-		projectPath = pathsys.join(root, projects[i]);
-
-		stat = filesys.statSync(projectPath);
-
-		if (stat.isDirectory()) {
-			console.log('check path: ' + projects[i]);
-
+			console.log('------ Resolved Fekit Modules List ------');
 			handleDir(projectPath);
 		}
 	}
 }
 
-transform();
+module.exports = transform;
