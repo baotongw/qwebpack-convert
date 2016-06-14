@@ -32,7 +32,7 @@ function resolveModule(modulePath) {
 		}
 	}
 
-	filesys.writeFileSync(packageJsonPath, JSON.stringify(packageJson))
+	filesys.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, '\t'));
 }
 
 function handleDir(projectPath, isSubModule) {

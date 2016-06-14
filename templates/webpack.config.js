@@ -4,7 +4,7 @@ var generateRefs = require('./build/generate-refs.js');
 var packageExtractCssPlugin = require('package-webpack-extract-css-plugin');
 
 // 需要手动从fekit.config工程中copy exports部分到这里
-var exports = []
+var exports = {exports}
 
 console.log('工程输出文件数量:' + exports.length);
 
@@ -53,9 +53,7 @@ module.exports = {
     },
     resolve: {
         root: process.cwd(),
-        alias: {
-            // fekit.config文件中的alias
-        },
+        alias: {alias},
         modulesDirectories: ['node_modules', 'fekit_modules'],
         extensions: ['', '.css', '.scss', '.jsx', '.js', '.webpack.js', '.web.js', '.mustache', '.string']
     },
