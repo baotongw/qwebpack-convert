@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var generateRefs = require('./build/generate-refs.js');
 var PackageExtractCssPlugin = require('package-webpack-extract-css-plugin');
-var ModuleAsRelativePlugin = require('package-relative-resolver-plugin');
+var ModuleAsRelativePlugin = require('package-module-as-relative-plugin');
 
 // 需要手动从fekit.config工程中copy exports部分到这里
 var exports = {exports}
