@@ -2,6 +2,7 @@
 
 var filesys = require('fs'),
 	pathsys = require('path'),
+	readFekitConfig = require('./../tools/readFekitConfig.js'),
 	fekitModuleConvert = require('./../tools/fekit-module-convert.js');
 
 console.log('');
@@ -73,12 +74,15 @@ var fekitPath = pathsys.resolve(projectRoot, 'fekit.config'),
 	webpackConfigPath = pathsys.resolve(moduleRoot, './templates/webpack.config.js'),
 	destPath = pathsys.resolve(projectRoot, './webpack.config.js');
 
-var fekitContent = filesys.readFileSync(fekitPath),
+var fekitConfig = readFekitConfig(fekitPath),
 	exports, alias;
 
-fekitContent = fekitContent && JSON.parse(fekitContent);
-exports = fekitContent.export;
-alias = fekitContent.alias;
+if(!fekitConfig) {
+	throw new Error('当前目录下未发现fekit.config文件，请确认后再次执行');
+}
+
+exports = fekitConfig.json.export;
+alias = fekitConfig.json.alias;
 
 var template = filesys.readFileSync(webpackConfigPath, {
 	encoding: 'utf-8'
