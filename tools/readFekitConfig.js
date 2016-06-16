@@ -11,7 +11,7 @@ function readFekitConfig(path) {
 		json = {};
 
 	try {
-		content = filesys.readFileSync(configPath, {
+		content = filesys.readFileSync(path, {
 			encoding: 'utf-8'
 		});
 
