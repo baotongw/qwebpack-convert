@@ -1,7 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
 var generateRefs = require('./build/generate-refs.js');
-var packageExtractCssPlugin = require('package-webpack-extract-css-plugin');
+var PackageExtractCssPlugin = require('package-webpack-extract-css-plugin');
+var ModuleAsRelativePlugin = require('package-relative-resolver-plugin');
 
 // 需要手动从fekit.config工程中copy exports部分到这里
 var exports = {exports}
@@ -54,8 +55,8 @@ module.exports = {
     resolve: {
         root: process.cwd(),
         alias: {alias},
-        modulesDirectories: ['node_modules', 'fekit_modules'],
+        modulesDirectories: ['fekit_modules', 'node_modules'],
         extensions: ['', '.css', '.scss', '.jsx', '.js', '.webpack.js', '.web.js', '.mustache', '.string']
     },
-    plugins: [new packageExtractCssPlugin()]
+    plugins: [new PackageExtractCssPlugin(), new ModuleAsRelativePlugin()]
 };
