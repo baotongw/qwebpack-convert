@@ -5,6 +5,11 @@ var fekitModule = 'fekit_modules';
 
 var level = 0;
 
+var patterns = {
+	singleLineComment: /(?:^|\n|\r)\s*\/\/.*(?:\r|\n|$)/g,
+	multiLineComment: /(?:^|\n|\r)\s*\/\*[\s\S]*?\*\/\s*(?:\r|\n|$)/g
+}
+
 function resolveModule(modulePath) {
 	var configPath = pathsys.resolve(modulePath, 'fekit.config'),
 		packageJsonPath = pathsys.resolve(modulePath, 'package.json');
@@ -21,6 +26,9 @@ function resolveModule(modulePath) {
 	} catch(err) {}
 
 	if (fekitConfig) {
+		// remove comment
+		fekitConfig = fekitConfig.replace(patterns.singleLineComment, '').replace(patterns.multiLineComment);
+
 		packageJson = JSON.parse(fekitConfig);
 		packageJson.main = packageJson.main || 'src/index.js';
 	} else {

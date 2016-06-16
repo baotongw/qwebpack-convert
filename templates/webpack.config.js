@@ -4,7 +4,6 @@ var generateRefs = require('./build/generate-refs.js');
 var PackageExtractCssPlugin = require('package-webpack-extract-css-plugin');
 var ModuleAsRelativePlugin = require('package-module-as-relative-plugin');
 
-// 需要手动从fekit.config工程中copy exports部分到这里
 var exports = {exports}
 
 console.log('工程输出文件数量:' + exports.length);
@@ -33,14 +32,8 @@ module.exports = {
     },
     module: {
         loaders: [{
-            test: /\.es6$/,
-            loader: 'babel-loader'
-        }, {
             test: /\.string$/,
             loader: 'package-webpack-string-loader'
-        }, {
-            test: /\.less$/,
-            loader: 'package-webpack-css-loader!less-loader'
         }, {
             test: /\.scss$/,
             loader: 'package-webpack-css-loader!sass-loader'

@@ -1,6 +1,6 @@
 {
   "name": "qwebpack-convert",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Convert a fekit project to a webpack compatible one",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
