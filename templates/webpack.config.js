@@ -17,7 +17,7 @@ exports.forEach(function(output) {
 
     var key = output.replace(extensionPattern, '');
 
-    webpackExport[key] = rootPrefix + output;
+    webpackExport[key] = [rootPrefix + output];
 });
 
 // 生成ref文件夹，其中包括vm、ver文件
