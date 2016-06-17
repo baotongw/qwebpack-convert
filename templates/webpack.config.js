@@ -1,10 +1,10 @@
 var path = require('path');
 var webpack = require('webpack');
 var generateRefs = require('./build/generate-refs.js');
-var packageExtractCssPlugin = require('package-webpack-extract-css-plugin');
+var PackageExtractCssPlugin = require('package-webpack-extract-css-plugin');
+var ModuleAsRelativePlugin = require('package-module-as-relative-plugin');
 
-// 需要手动从fekit.config工程中copy exports部分到这里
-var exports = []
+var exports = {exports}
 
 console.log('工程输出文件数量:' + exports.length);
 
@@ -30,19 +30,10 @@ module.exports = {
         path: './prd',
         filename: '[name].js'
     },
-    resolve: {
-        extensions: ['', '.js', '.jsx', '.css', '.scss', '.string', '.mustache']
-    },
     module: {
         loaders: [{
-            test: /\.es6$/,
-            loader: 'babel-loader'
-        }, {
             test: /\.string$/,
             loader: 'package-webpack-string-loader'
-        }, {
-            test: /\.less$/,
-            loader: 'package-webpack-css-loader!less-loader'
         }, {
             test: /\.scss$/,
             loader: 'package-webpack-css-loader!sass-loader'
@@ -56,11 +47,9 @@ module.exports = {
     },
     resolve: {
         root: process.cwd(),
-        alias: {
-            // fekit.config文件中的alias
-        },
-        modulesDirectories: ['node_modules', 'fekit_modules'],
+        alias: {alias},
+        modulesDirectories: ['fekit_modules', 'node_modules'],
         extensions: ['', '.css', '.scss', '.jsx', '.js', '.webpack.js', '.web.js', '.mustache', '.string']
     },
-    plugins: [new packageExtractCssPlugin()]
+    plugins: [new PackageExtractCssPlugin(), new ModuleAsRelativePlugin()]
 };

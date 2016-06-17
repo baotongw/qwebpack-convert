@@ -2,31 +2,27 @@
 
 var filesys = require('fs'),
 	pathsys = require('path'),
+	readFekitConfig = require('./../tools/readFekitConfig.js'),
 	fekitModuleConvert = require('./../tools/fekit-module-convert.js');
 
-console.log('##########  Webpack Convert Start ##########')
 console.log('');
+console.log('##########  Webpack Convert Start ##########')
+
 var projectRoot = process.cwd(),
 	moduleRoot = pathsys.dirname(process.argv[1]);
 
 moduleRoot = pathsys.dirname(moduleRoot);
 
-// do fekit module transfer
-var command = 'node ./tools/fekit-module-convert.js';
-
 console.log('');
-console.log('##########  Step1 convert fekit modules ##########')
+console.log('##########  Step1 转换fekit_modules包到标准包 ##########')
 fekitModuleConvert(projectRoot);
 
 console.log('');
-console.log('##########  Step2 copy wepback files ##########')
+console.log('##########  Step2 复制webpack文件到工程中 ##########')
 
 var tmpls = [{
 	source: './templates/package.json',
 	dest: './package.json'
-}, {
-	source: './templates/webpack.config.js',
-	dest: './webpack.config.js'
 }, {
 	source: './templates/generate-refs.js',
 	dest: './build/generate-refs.js'
@@ -70,3 +66,33 @@ tmpls.forEach(function(item, index) {
 		}
 	}
 });
+
+console.log('')
+console.log('##########  Step3 移植fekit.config中的exports和alias ##########')
+
+var fekitPath = pathsys.resolve(projectRoot, 'fekit.config'),
+	webpackConfigPath = pathsys.resolve(moduleRoot, './templates/webpack.config.js'),
+	destPath = pathsys.resolve(projectRoot, './webpack.config.js');
+
+var fekitConfig = readFekitConfig(fekitPath),
+	exports, alias;
+
+if(!fekitConfig) {
+	throw new Error('当前目录下未发现fekit.config文件，请确认后再次执行');
+}
+
+exports = fekitConfig.json.export;
+alias = fekitConfig.json.alias;
+
+var template = filesys.readFileSync(webpackConfigPath, {
+	encoding: 'utf-8'
+});
+
+var output = template.replace(/\{exports\}/, JSON.stringify(exports, null, '\t'))
+	.replace(/\{alias\}/, JSON.stringify(alias, null, '\t\t\t'));
+
+filesys.writeFileSync(destPath, output);
+console.log('webpack.config.js已生成');
+
+console.log('')
+console.log('########## webpack初始化已完成 ##########')

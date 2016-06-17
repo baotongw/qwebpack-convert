@@ -31,6 +31,7 @@
     "package-webpack-mustache-loader": "~0.0.x",
     "package-webpack-css-loader": "~0.0.x",
     "package-webpack-string-loader": "~0.0.x",
-    "package-webpack-extract-css-plugin": "~0.0.x"
+    "package-webpack-extract-css-plugin": "~0.0.x",
+    "package-module-as-relative-plugin": "~0.0.x"
   }
 }

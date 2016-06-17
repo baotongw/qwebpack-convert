@@ -1,5 +1,6 @@
 var filesys = require('fs'),
-	pathsys = require('path');
+	pathsys = require('path'),
+	readFekitConfig = require('./readFekitConfig.js');
 
 var fekitModule = 'fekit_modules';
 
@@ -11,20 +12,13 @@ function resolveModule(modulePath) {
 
 	var moduleName = pathsys.basename(modulePath);
 
-	var fekitConfig,
-		packageJson;
-
-	try {
-		fekitConfig = filesys.readFileSync(configPath, {
-			encoding: 'utf-8'
-		});
-	} catch(err) {}
+	var fekitConfig = readFekitConfig(configPath),
+		output = {};
 
 	if (fekitConfig) {
-		packageJson = JSON.parse(fekitConfig);
-		packageJson.main = packageJson.main || 'src/index.js';
+		output.main = fekitConfig.json.main || 'src/index.js';
 	} else {
-		packageJson = {
+		output = {
 			name: moduleName,
 			main: 'src/index.js',
 			version: 'no version',
@@ -32,7 +26,7 @@ function resolveModule(modulePath) {
 		}
 	}
 
-	filesys.writeFileSync(packageJsonPath, JSON.stringify(packageJson))
+	filesys.writeFileSync(packageJsonPath, JSON.stringify(output, null, '\t'));
 }
 
 function handleDir(projectPath, isSubModule) {
