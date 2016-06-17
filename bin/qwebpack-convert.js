@@ -84,6 +84,12 @@ if(!fekitConfig) {
 exports = fekitConfig.json.export;
 alias = fekitConfig.json.alias;
 
+//fekit alias中 以/开头的路径，在webpack中会被当做绝对路径 导致模块解析错误
+Object.keys(alias).forEach(function(item,index){
+	alias[item] = alias[item].replace(/^(\/|\\)+/,'')
+});
+
+
 var template = filesys.readFileSync(webpackConfigPath, {
 	encoding: 'utf-8'
 });

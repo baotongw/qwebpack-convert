@@ -25,9 +25,12 @@
   "bugs": {
     "url": "https://github.com/sdwangbaotong/qwebpack-convert/issues"
   },
-  "maintainers": [{
-    "name": "baotong.wang",
-    "email": "sdwangbaotong@hotmail.com"
-  }],
-  "homepage": "https://github.com/sdwangbaotong/qwebpack-convert"
+  "maintainers": [
+    {
+      "name": "baotong.wang",
+      "email": "sdwangbaotong@hotmail.com"
+    }
+  ],
+  "homepage": "https://github.com/sdwangbaotong/qwebpack-convert",
+  "dependencies": {}
 }
