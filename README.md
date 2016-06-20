@@ -22,5 +22,5 @@
  
 pack, sync命令
 + npm run pack，执行webpack打包，同时生成refs文件夹（vm，scripts，styles，ver文件）
-+ npm run sync，将pack生成的refs文件推到开发机
++ npm run sync， 同步当前工程目录信息到.dev 文件配置的开发机中的路径
 + npm run pack-sync，简化命令，执行pack && sync
