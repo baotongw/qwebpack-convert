@@ -19,8 +19,9 @@
   + --fekit     使用fekit模式启动server，会分析文件require，使用document.write返回
   + --mock      mock数据，参考fekit -m
   + --compress  打包压缩脚本
- 
+
 pack, sync命令
 + npm run pack，执行webpack打包，同时生成refs文件夹（vm，scripts，styles，ver文件）
++ npm run min，执行webpack压缩打包，同时生成refs文件夹（vm，scripts，styles，ver文件）
 + npm run sync， 同步当前工程目录信息到.dev 文件配置的开发机中的路径
 + npm run pack-sync，简化命令，执行pack && sync
