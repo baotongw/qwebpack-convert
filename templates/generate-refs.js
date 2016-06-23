@@ -1,17 +1,3 @@
-/**
- * --------------------------------------------------------------------------- *
- *
- * @Project: package_mobile
- * @FileName: generate-refs.js
- * @Dependence: --
- * @Description: 在webpack下生成 原来fekit的refs目录
- * @CreatedBy: liao.zhang
- * @CreateDate: 2016/4/8 14:40
- * @LastModifiedBy: liao.zhang
- * @LastModifiedDate: 2016/4/8 14:40
- *
- * --------------------------------------------------------------------------- *
- */
 
 var sysFs = require('fs');
 var sysPath = require('path');

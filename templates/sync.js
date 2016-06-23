@@ -1,16 +1,5 @@
 /**
- * --------------------------------------------------------------------------- *
- *
- * @Project: package_mobile
- * @FileName: sync.js
- * @Dependence: --
- * @Description: 同步工程到目标机
- * @CreatedBy: liao.zhang
- * @CreateDate: 2016/6/7 11:01
- * @LastModifiedBy: liao.zhang
- * @LastModifiedDate: 2016/6/7 11:01
- *
- * --------------------------------------------------------------------------- *
+ * 同步工程目录到开发机
  */
 
 "use strict";

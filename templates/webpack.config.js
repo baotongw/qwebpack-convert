@@ -20,9 +20,6 @@ exports.forEach(function(output) {
     webpackExport[key] = [rootPrefix + output];
 });
 
-// 生成ref文件夹，其中包括vm、ver文件
-generateRefs(exports);
-
 module.exports = {
     originExports: exports,
     entry: webpackExport,
