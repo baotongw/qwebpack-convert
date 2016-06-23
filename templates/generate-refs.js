@@ -23,6 +23,7 @@ var mkdirp = require('mkdirp');
 
 var config = {
     srcPath: './src/',
+    prdPath: './prd/',
     vmPath: './vm/',
     refsPath: './refs/',
     fileEncoding: 'utf-8',
@@ -123,7 +124,7 @@ var refsGenerator = {
         hashObj.update(buffer);
         return hashObj.digest('hex');
     },
-    getFilesVersion: function(exportsList) {
+    computeFilesVersion:function(exportsList){
         var self = this;
         if (!exportsList) {
             throw Error('bad exportsList');
@@ -143,11 +144,36 @@ var refsGenerator = {
                 console.log(absPath, ' does not exists');
             }
         });
+        return pathMD5Mapping;
+    },
+    /**
+     * 从生成的prd目录中获取响应的version信息
+     * @param exportsList
+     * @returns {Array}
+     */
+    getFilesVersion: function(exportsList) {
+        var self = this;
+        if (!exportsList) {
+            throw Error('bad exportsList');
+        }
 
-        var refsVerPath = sysPath.join(config.refsPath, 'ver');
-        this._generageVersionMapping(pathMD5Mapping, refsVerPath);
-        this._generageVersionFiles(pathMD5Mapping, refsVerPath);
-
+        var pathMD5Mapping = [],
+            prdBase = config.prdPath,
+            nameHashPattern = /@(\w+)\./;
+        exportsList.forEach(function(filePath, index) {
+            var absPath = sysPath.join(prdBase, filePath);
+            var dirname = sysPath.dirname(absPath);
+            var dirInfo;
+            if (sysFs.existsSync(dirname)) {
+                dirInfo = sysFs.readdirSync(dirname);
+                dirInfo.length !== 0 &&  dirInfo[0].replace(nameHashPattern,function(fullMatch,hash){
+                        pathMD5Mapping.push([filePath, hash]);
+                        return fullMatch;
+                });
+            } else {
+                console.log(absPath, ' does not exists');
+            }
+        });
         return pathMD5Mapping;
     },
     _updateVers: function(content, matchRegex, prefix, resourceMD5Dict) {
@@ -188,6 +214,11 @@ var refsGenerator = {
         }
         sysFs.writeFileSync(dstPath, content, "utf-8");
     },
+    generateVersionFiles:function(pathMD5Mapping){
+        var refsVerPath = sysPath.join(config.refsPath, 'ver');
+        this._generageVersionMapping(pathMD5Mapping, refsVerPath);
+        this._generageVersionFiles(pathMD5Mapping, refsVerPath);
+    },
     generateVmFiles: function(resourceMD5Dict) {
         var validFileList = fsUtil.getPathList(config.vmPath, config.validTemplateType, true);
         var refsVmBase = config.refsPath;
@@ -209,6 +240,7 @@ var refsGenerator = {
             fsUtil.rmdirRSync(config.refsPath);
         }
         var pathMD5Mapping = this.getFilesVersion(exportsList);
+        this.generateVersionFiles(pathMD5Mapping);
 
         var resourceMD5Dict = {};
         pathMD5Mapping.forEach(function(mapData) {

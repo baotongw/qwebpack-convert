@@ -4,11 +4,12 @@
   "description": "",
   "main": "",
   "scripts": {
-    "pack": "webpack && node ./build/post-actions.js",
-    "min": "webpack -p && node ./build/post-actions.js",
+    "clean": "node ./build/clean.js",
+    "pack": "npm run clean && webpack && node ./build/post-actions.js",
+    "min": "npm run clean && webpack -p && node ./build/post-actions.js",
     "sync": "node ./build/sync.js",
-    "pack-sync": "webpack && node ./build/post-actions.js && node ./build/sync.js",
-    "min-sync": "webpack -p && node ./build/post-actions.js && node ./build/sync.js"
+    "pack-sync": "npm run pack && npm run sync",
+    "min-sync": "npm run min && npm run sync"
   },
   "author": "package-team",
   "license": "ISC",
