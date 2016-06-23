@@ -28,7 +28,7 @@ module.exports = {
     entry: webpackExport,
     output: {
         path: './prd',
-        filename: '[name].js'
+        filename: '[name]@[chunkhash].js'
     },
     module: {
         loaders: [{
@@ -51,5 +51,5 @@ module.exports = {
         modulesDirectories: ['fekit_modules', 'node_modules'],
         extensions: ['', '.css', '.scss', '.jsx', '.js', '.webpack.js', '.web.js', '.mustache', '.string']
     },
-    plugins: [new PackageExtractCssPlugin(), new ModuleAsRelativePlugin()]
+    plugins: [new webpack.optimize.OccurrenceOrderPlugin(true), new PackageExtractCssPlugin(), new ModuleAsRelativePlugin()]
 };
