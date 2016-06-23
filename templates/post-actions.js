@@ -1,16 +1,5 @@
 /**
- * --------------------------------------------------------------------------- *
- *
- * @Project: package_mobile
- * @FileName: postActions.js
- * @Dependence: --
- * @Description: --
- * @CreatedBy: liao.zhang
- * @CreateDate: 2016/5/13 19:48
- * @LastModifiedBy: liao.zhang
- * @LastModifiedDate: 2016/5/13 19:48
- *
- * --------------------------------------------------------------------------- *
+ * 生成refs目录中的版本信息
  */
 
 "use strict";
