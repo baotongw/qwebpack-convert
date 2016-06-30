@@ -6,12 +6,14 @@ var sysCrypto = require('crypto');
 
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
+var fse = require('fs-extra');
 
 var config = {
     srcPath: './src/',
     prdPath: './prd/',
     vmPath: './vm/',
     refsPath: './refs/',
+    verPath:'./ver/',
     fileEncoding: 'utf-8',
     validTemplateType: ['.vm', '.html', '.htm'],
     validUpdateType: ['.vm']
@@ -102,6 +104,9 @@ var refsGenerator = {
             }
             sysFs.writeFileSync(verFilePath, mapData[1], config.fileEncoding);
         });
+
+        fse.copySync(refsVerBase,config.verPath);
+
     },
     getMD5: function(content) {
         var hashObj, buffer;
