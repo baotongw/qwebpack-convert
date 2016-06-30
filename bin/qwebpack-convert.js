@@ -32,6 +32,9 @@ var tmpls = [{
 }, {
 	source: './templates/sync.js',
 	dest: './build/sync.js'
+}, {
+	source: './templates/clean.js',
+	dest: './build/clean.js'
 }]
 
 // copy package.json, webpack.config.js, pack, sync scripts to the project projectRoot folder
