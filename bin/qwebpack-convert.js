@@ -9,7 +9,8 @@ console.log('');
 console.log('##########  Webpack Convert Start ##########')
 
 var projectRoot = process.cwd(),
-	moduleRoot = pathsys.dirname(process.argv[1]);
+	//moduleRoot = pathsys.dirname(process.argv[1]);
+	moduleRoot = pathsys.dirname(__dirname);
 
 moduleRoot = pathsys.dirname(moduleRoot);
 
