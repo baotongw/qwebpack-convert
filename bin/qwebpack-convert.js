@@ -9,10 +9,7 @@ console.log('');
 console.log('##########  Webpack Convert Start ##########')
 
 var projectRoot = process.cwd(),
-	//moduleRoot = pathsys.dirname(process.argv[1]);
 	moduleRoot = pathsys.dirname(__dirname);
-
-moduleRoot = pathsys.dirname(moduleRoot);
 
 console.log('');
 console.log('##########  Step1 转换fekit_modules包到标准包 ##########')
@@ -59,7 +56,8 @@ tmpls.forEach(function(item, index) {
 		return
 	}
 
-	content = filesys.readFileSync(source)
+	content = filesys.readFileSync(source);
+
 	if (content) {
 		try {
 			filesys.writeFileSync(dest, content);
