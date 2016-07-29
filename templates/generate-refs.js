@@ -137,6 +137,19 @@ var refsGenerator = {
         });
         return pathMD5Mapping;
     },
+    _getFileBase:function(filePath){
+        var fileName = sysPath.basename(filePath);
+        var lastDotPos = fileName.lastIndexOf('.');
+        var retName,retExt;
+        if(lastDotPos !== -1){
+            retName = fileName.substring(0,lastDotPos);
+            retExt = fileName.substring(lastDotPos+1);
+        }else{
+            retName = fileName;
+            retExt = '';
+        }
+        return [retName,retExt];
+    },
     /**
      * 从生成的prd目录中获取响应的version信息
      * @param exportsList
@@ -150,17 +163,22 @@ var refsGenerator = {
 
         var pathMD5Mapping = [],
             prdBase = config.prdPath,
-            nameHashPattern = /@(\w+)\./;
+            nameHashPattern = /(.*)?@(\w+)\.(.*)/;
         exportsList.forEach(function(filePath, index) {
             var absPath = sysPath.join(prdBase, filePath);
             var dirname = sysPath.dirname(absPath);
+            var fileBase = self._getFileBase(filePath);
             var dirInfo;
             if (sysFs.existsSync(dirname)) {
                 dirInfo = sysFs.readdirSync(dirname);
-                dirInfo.length !== 0 &&  dirInfo[0].replace(nameHashPattern,function(fullMatch,hash){
-                        pathMD5Mapping.push([filePath, hash]);
+                for(var i = dirInfo.length;i--;){
+                    dirInfo[i].replace(nameHashPattern,function(fullMatch,name,hash,suffix){
+                        if(fileBase[0] === name && fileBase[1] === suffix){
+                            pathMD5Mapping.push([filePath, hash]);
+                        }
                         return fullMatch;
-                });
+                    })
+                }
             } else {
                 console.log(absPath, ' does not exists');
             }
