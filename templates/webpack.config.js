@@ -1,6 +1,5 @@
 var path = require('path');
 var webpack = require('webpack');
-var generateRefs = require('./build/generate-refs.js');
 var PackageExtractCssPlugin = require('package-webpack-extract-css-plugin');
 var ModuleAsRelativePlugin = require('package-module-as-relative-plugin');
 
@@ -19,6 +18,8 @@ exports.forEach(function(output) {
 
     webpackExport[key] = [rootPrefix + output];
 });
+
+console.log('webpack 正在编译，稍等片刻');
 
 module.exports = {
     originExports: exports,
